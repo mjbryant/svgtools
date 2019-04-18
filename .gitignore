@@ -1,0 +1,8 @@
+*.sw[op]
+*.pyc
+tags
+
+local.properties
+.gradle
+.idea
+build/*

@@ -1,0 +1,43 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+
+    apply from: 'dependencies.gradle'
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "com.android.tools.build:gradle:${versions.android}"
+    }
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
+group 'com.plangrid.svgtools'
+version '0.0.1'
+
+apply plugin: 'kotlin-multiplatform'
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation deps.kotlin.stdlib.common
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation deps.kotlin.test.common
+                implementation deps.kotlin.test.annotations
+            }
+        }
+    }
+}
+
+apply from: 'android.gradle'
