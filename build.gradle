@@ -1,15 +1,16 @@
 buildscript {
+    ext.versions = [
+        'kotlin': '1.3.30',
+    ]
+
     repositories {
         google()
         mavenCentral()
         jcenter()
     }
 
-    apply from: 'dependencies.gradle'
-
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath "com.android.tools.build:gradle:${versions.android}"
     }
 }
 
@@ -25,19 +26,51 @@ version '0.0.1'
 apply plugin: 'kotlin-multiplatform'
 
 kotlin {
+    targets {
+        targetFromPreset(presets.jvm, 'jvm')
+        targetFromPreset(presets.js, 'js')
+        targetFromPreset(presets.macosX64, 'macos')
+        targetFromPreset(presets.iosX64, 'iosSim')
+        targetFromPreset(presets.iosArm64, 'iosDevice64')
+        targetFromPreset(presets.iosArm32, 'iosDevice32')
+        targetFromPreset(presets.mingwX64, 'mingw') {
+            compilations.test.linkerOpts "-Wl,--subsystem,windows, -Bstatic -lbcrypt"
+        }
+        targetFromPreset(presets.linuxX64, 'linux64')
+        targetFromPreset(presets.linuxArm32Hfp, 'linux32')
+    }
     sourceSets {
         commonMain {
             dependencies {
-                implementation deps.kotlin.stdlib.common
+                implementation 'org.jetbrains.kotlin:kotlin-stdlib-common'
             }
         }
         commonTest {
             dependencies {
-                implementation deps.kotlin.test.common
-                implementation deps.kotlin.test.annotations
+                implementation 'org.jetbrains.kotlin:kotlin-test-common'
+                implementation 'org.jetbrains.kotlin:kotlin-test-annotations-common'
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test'
+                implementation 'org.jetbrains.kotlin:kotlin-test-junit'
+            }
+        }
+        jsMain {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-stdlib-js'
+            }
+        }
+        jsTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test-js'
             }
         }
     }
 }
-
-apply from: 'android.gradle'
