@@ -1,2 +1,3 @@
 rootProject.name = 'svgtools'
+enableFeaturePreview('GRADLE_METADATA')
 

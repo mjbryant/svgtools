@@ -1,0 +1,28 @@
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+
+ext.artifactoryRepos = [
+        'release': 'libs-release-local',
+        'snapshot': 'libs-snapshot-local',
+]
+
+task publishSnapshot() {
+    doFirst {
+        clientConfig.publisher.repoKey = artifactoryRepos.snapshot
+    }
+    finalizedBy artifactoryPublish
+}
+
+artifactory {
+    contextUrl = 'https://plangrid.jfrog.io/plangrid/'
+    publish {
+        repository {
+            username = System.getenv('ARTIFACTORY_USER')
+            password = System.getenv('ARTIFACTORY_PASSWORD')
+            maven = true
+        }
+        defaults {
+            publishArtifacts = true
+        }
+    }
+}

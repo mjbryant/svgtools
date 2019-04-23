@@ -11,6 +11,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
     }
 }
 
@@ -62,6 +63,7 @@ kotlin {
                 implementation 'org.jetbrains.kotlin:kotlin-test-junit'
             }
         }
+        // TODO this doesn't actually run the JS tests
         jsMain {
             dependencies {
                 implementation 'org.jetbrains.kotlin:kotlin-stdlib-js'
@@ -74,3 +76,6 @@ kotlin {
         }
     }
 }
+
+// Contains all the publishing configuration
+apply from: 'publish.gradle'

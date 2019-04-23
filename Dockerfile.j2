@@ -1,0 +1,52 @@
+# Start with JDK8
+FROM openjdk:8
+
+# Init dependencies for the setup process
+# Stolen entirely from PGFoundation
+RUN dpkg --add-architecture i386 \
+    && apt-get update \
+    && apt-get install -y \
+        build-essential \
+        software-properties-common \
+        unzip \
+        wget \
+        python-requests \
+        patch \
+        zlib1g-dev \
+        liblzma-dev \
+        pkg-config \
+    # Install 32-bit compatibility for 64-bit environments
+        libc6:i386 \
+        libncurses5:i386 \
+        libstdc++6:i386 \
+        zlib1g:i386 \
+        ruby-full \
+        ruby-dev \
+    # Cleanup
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV GRADLE_USER_HOME /gradle_home
+
+RUN mkdir -p ${GRADLE_USER_HOME}
+
+# ENV DUMMY_LOCAL_PROPERTIES local.properties.dummy
+ENV DOCKER_GRADLE_HOME container-test-home
+
+# create a directory to mount as the container's GRADLE_USER_HOME to share the gradle cache from run to run
+RUN mkdir -p ${DOCKER_GRADLE_HOME}
+
+# Downloading gcloud package
+RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz
+
+# Installing the package
+RUN mkdir -p /usr/local/gcloud \
+  && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
+  && /usr/local/gcloud/google-cloud-sdk/install.sh
+
+# Adding the package path to local
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
+# Copy source files & install gradle
+RUN mkdir build
+COPY . ./build
