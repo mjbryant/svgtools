@@ -57,12 +57,12 @@ nodes['Build Project'] = {
             PlangridStage("Build") {
                 // Sometimes the gradle build command is flaky so we retry
                 retry(2) {
-                    sh("docker exec ${DOCKER_ID} bash -c 'cd build ; gradlew build'")
+                    sh("docker exec ${DOCKER_ID} bash -c 'cd build ; ./gradlew build'")
                 }
             }
             PlangridStage("Publish") {
                 if (buildType == BuildType.SNAPSHOT) {
-                    sh("docker exec ${DOCKER_ID} bash -c 'cd build ; gradlew publishSnapshot'")
+                    sh("docker exec ${DOCKER_ID} bash -c 'cd build ; ./gradlew publishSnapshot'")
                 }
             }
         } finally {
