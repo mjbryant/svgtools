@@ -2,6 +2,8 @@
 *.pyc
 tags
 
+Dockerfile
+
 local.properties
 .gradle
 .idea
