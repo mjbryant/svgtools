@@ -46,6 +46,7 @@ artifactory {
 
 tasks.register("publishSnapshot") {
     dependsOn 'sourceJar'
+    dependsOn 'generatePomFileForSnapshotPublication'
     doFirst {
         clientConfig.publisher.repoKey = artifactoryRepos.snapshot
         artifactoryPublish.publications(publishing.publications.snapshot)
