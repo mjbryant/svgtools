@@ -35,7 +35,7 @@ nodes['Build Project'] = {
             currentBuild.result = "SUCCESS"
 
             PlangridStage('Build Docker') {
-                CURRENT_DIR = sh(returnStdout: true, script: "echo ${PWD}; pwd").trim()
+                CURRENT_DIR = sh(returnStdout: true, script: "set -x").trim()
                 retry(2) {
                     sh '/opt/plangrid/build-tools/bin/build-docker'
                 }
