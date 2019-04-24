@@ -23,7 +23,7 @@ artifactory {
         }
         defaults {
             publishArtifacts = true
-            //publications 'pluginMaven'
+            publications 'pluginMaven'
         }
     }
 }
