@@ -54,12 +54,17 @@ nodes['Build Project'] = {
                     -v " + "${CURRENT_DIR}:/build " + "${env.PROJECT_NAME}:${env.GIT_COMMIT}").trim()
             }
 
+            PlangridStage("Clean") {
+                sh("docker exec ${DOCKER_ID} bash -c 'find \${GRADLE_USER_HOME}/caches f -name \"*.lock\" | xargs -I {} rm \"{}\"'")
+            }
+
             PlangridStage("Build") {
                 // Sometimes the gradle build command is flaky so we retry
                 retry(2) {
                     sh("docker exec ${DOCKER_ID} bash -c 'cd build ; ./gradlew build'")
                 }
             }
+
             PlangridStage("Publish") {
                 if (buildType == BuildType.SNAPSHOT) {
                     sh("docker exec ${DOCKER_ID} bash -c 'cd build ; ./gradlew publishSnapshot'")
