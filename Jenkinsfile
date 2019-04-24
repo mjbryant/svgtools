@@ -36,7 +36,7 @@ nodes['Build Project'] = {
 
             PlangridStage('Build Docker') {
                 retry(2) {
-                    sh 'set -x && /opt/plangrid/build-tools/bin/build-docker'
+                    sh 'VERBOSE=1 /opt/plangrid/build-tools/bin/build-docker'
                 }
                 CURRENT_DIR = sh(returnStdout: true, script: "pwd").trim()
 
