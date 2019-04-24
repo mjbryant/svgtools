@@ -11,6 +11,9 @@ task sourceJar(type: Jar) {
     classifier "sources"
 }
 
+group GROUP
+version VERSION
+
 publishing {
     publications {
         all {
@@ -19,6 +22,10 @@ publishing {
             version VERSION
 
             artifact(sourceJar)
+        }
+
+        snapshot(MavenPublication) {
+            version = "${version}-SNAPSHOT"
         }
     }
 }
@@ -41,6 +48,7 @@ tasks.register("publishSnapshot") {
     dependsOn 'sourceJar'
     doFirst {
         clientConfig.publisher.repoKey = artifactoryRepos.snapshot
+        artifactoryPublish.publications(publishing.publications.snapshot)
     }
     finalizedBy artifactoryPublish
 }
