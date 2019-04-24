@@ -27,6 +27,10 @@ publishing {
         snapshot(MavenPublication) {
             version = "${version}-SNAPSHOT"
         }
+
+        release(MavenPublication) {
+            version = version
+        }
     }
 }
 
@@ -50,6 +54,16 @@ tasks.register("publishSnapshot") {
     doFirst {
         clientConfig.publisher.repoKey = artifactoryRepos.snapshot
         artifactoryPublish.publications(publishing.publications.snapshot)
+    }
+    finalizedBy artifactoryPublish
+}
+
+tasks.register("publishRelease") {
+    dependsOn 'sourceJar'
+    dependsOn 'generatePomFileForReleasePublication'
+    doFirst {
+        clientConfig.publisher.repoKey = artifactoryRepos.release
+        artifactoryPublish.publications(publishing.publications.release)
     }
     finalizedBy artifactoryPublish
 }

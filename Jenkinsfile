@@ -68,6 +68,8 @@ nodes['Build Project'] = {
             PlangridStage("Publish") {
                 if (buildType == BuildType.SNAPSHOT) {
                     sh("docker exec ${DOCKER_ID} bash -c 'cd build ; ./gradlew publishSnapshot'")
+                } else if (buildType == BuildType.RELEASE) {
+                    sh("docker exec ${DOCKER_ID} bash -c 'cd build ; ./gradlew publishRelease'")
                 }
             }
         } finally {
@@ -113,9 +115,6 @@ interface BuildType {
 }
 
 static getBuildTypeForBranchName(String branchName) {
-    return BuildType.SNAPSHOT
-    // We'll turn these back on once we get the default snapshot build working
-    /*
     if (branchName == 'master') {
         return BuildType.SNAPSHOT
     } else if (branchName.startsWith('PR')) {
@@ -125,6 +124,5 @@ static getBuildTypeForBranchName(String branchName) {
     } else {
         return BuildType.UNKNOWN
     }
-    */
 }
 
