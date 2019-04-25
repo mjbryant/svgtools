@@ -1,6 +1,5 @@
 package com.plangrid.svgtools
 
-import kotlin.math.abs
 import kotlin.text.Regex
 
 val COMMANDS = hashSetOf(

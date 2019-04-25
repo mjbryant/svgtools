@@ -1,18 +1,7 @@
-apply plugin: 'com.jfrog.artifactory'
-apply plugin: 'maven-publish'
-
 ext.artifactoryRepos = [
         'release': 'libs-release-local',
         'snapshot': 'libs-snapshot-local',
 ]
-
-task sourceJar(type: Jar) {
-    from kotlin.sourceSets.commonMain.kotlin.srcDirs
-    classifier "sources"
-}
-
-group GROUP
-version VERSION
 
 publishing {
     publications {
@@ -20,8 +9,6 @@ publishing {
             groupId = GROUP
             artifactId ARTIFACT_NAME
             version VERSION
-
-            artifact(sourceJar)
         }
 
         snapshot(MavenPublication) {
@@ -48,8 +35,7 @@ artifactory {
     }
 }
 
-tasks.register("publishSnapshot") {
-    dependsOn 'sourceJar'
+tasks.register('publishSnapshot') {
     dependsOn 'generatePomFileForSnapshotPublication'
     doFirst {
         clientConfig.publisher.repoKey = artifactoryRepos.snapshot
@@ -58,8 +44,7 @@ tasks.register("publishSnapshot") {
     finalizedBy artifactoryPublish
 }
 
-tasks.register("publishRelease") {
-    dependsOn 'sourceJar'
+tasks.register('publishRelease') {
     dependsOn 'generatePomFileForReleasePublication'
     doFirst {
         clientConfig.publisher.repoKey = artifactoryRepos.release

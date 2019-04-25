@@ -228,25 +228,25 @@ class TestCommand {
                 Arc(
                         Point(650f, 325f),
                         Point(25f, 25f),
-                       -30f, false, true,
+                        -30f, false, true,
                         Point(700f, 300f)),
                 Line(Point(700f, 300f), Point(750f, 275f)),
                 Arc(
                         Point(750f, 275f),
                         Point(25f, 50f),
-                       -30f, false, true,
+                        -30f, false, true,
                         Point(800f, 250f)),
                 Line(Point(800f, 250f), Point(850f, 225f)),
                 Arc(
                         Point(850f, 225f),
                         Point(25f, 75f),
-                       -30f, false, true,
+                        -30f, false, true,
                         Point(900f, 200f)),
                 Line(Point(900f, 200f), Point(950f, 175f)),
                 Arc(
                         Point(950f, 175f),
                         Point(25f, 100f),
-                       -30f, false, true,
+                        -30f, false, true,
                         Point(1000f, 150f)),
                 Line(Point(1000f, 150f), Point(1050f, 125f))
         )

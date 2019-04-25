@@ -1,81 +1,27 @@
-buildscript {
-    ext.versions = [
-        'kotlin': '1.3.30',
-    ]
-
-    repositories {
-        google()
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
-    }
-}
-
-repositories {
-    google()
-    jcenter()
-    mavenCentral()
+plugins {
+    id 'org.jetbrains.kotlin.platform.native' version '1.3.31'
+    id 'maven-publish'
+    id 'com.jfrog.artifactory' version '4.9.6'
 }
 
 group 'com.plangrid.svgtools'
-version '0.0.1'
+version '0.1.1'
 
-apply plugin: 'kotlin-multiplatform'
-
-kotlin {
-    targets {
-        targetFromPreset(presets.jvm, 'jvm')
-        targetFromPreset(presets.js, 'js')
-        targetFromPreset(presets.macosX64, 'macos')
-        targetFromPreset(presets.iosX64, 'iosSim')
-        targetFromPreset(presets.iosArm64, 'iosDevice64')
-        targetFromPreset(presets.iosArm32, 'iosDevice32')
-        targetFromPreset(presets.mingwX64, 'mingw') {
-            compilations.test.linkerOpts "-Wl,--subsystem,windows, -Bstatic -lbcrypt"
-        }
-        targetFromPreset(presets.linuxX64, 'linux64')
-        targetFromPreset(presets.linuxArm32Hfp, 'linux32')
-    }
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation 'org.jetbrains.kotlin:kotlin-stdlib-common'
-            }
-        }
-        commonTest {
-            dependencies {
-                implementation 'org.jetbrains.kotlin:kotlin-test-common'
-                implementation 'org.jetbrains.kotlin:kotlin-test-annotations-common'
-            }
-        }
-        jvmMain {
-            dependencies {
-                implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-            }
-        }
-        jvmTest {
-            dependencies {
-                implementation 'org.jetbrains.kotlin:kotlin-test'
-                implementation 'org.jetbrains.kotlin:kotlin-test-junit'
-            }
-        }
-        // TODO this doesn't actually run the JS tests
-        jsMain {
-            dependencies {
-                implementation 'org.jetbrains.kotlin:kotlin-stdlib-js'
-            }
-        }
-        jsTest {
-            dependencies {
-                implementation 'org.jetbrains.kotlin:kotlin-test-js'
-            }
-        }
-    }
+repositories {
+    mavenCentral()
 }
 
-// Contains all the publishing configuration
+components.main {
+    targets = [
+            'macos_x64',
+            'linux_x64',
+            'ios_x64',
+            'ios_arm64',
+            'ios_arm32',
+            'android_arm32',
+            'android_arm64',
+    ]
+    outputKinds = [KLIBRARY]
+}
+
 apply from: 'publish.gradle'
