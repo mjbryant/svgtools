@@ -4,8 +4,8 @@ plugins {
     id 'com.jfrog.artifactory' version '4.9.6'
 }
 
-group 'com.plangrid.svgtools'
-version '0.1.1'
+group GROUP
+version VERSION
 
 repositories {
     mavenCentral()
@@ -23,5 +23,3 @@ components.main {
     ]
     outputKinds = [KLIBRARY]
 }
-
-apply from: 'publish.gradle'
